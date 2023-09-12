@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>194873432048-sfl1v0tb0u3rjflm1rne0041oceik5e3.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.194873432048-sfl1v0tb0u3rjflm1rne0041oceik5e3</string>
+	<key>API_KEY</key>
+	<string>AIzaSyCRtlV60a6Yk9pAEojznUWrogcI69-fXWc</string>
+	<key>GCM_SENDER_ID</key>
+	<string>194873432048</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.example.followUpClinicApp</string>
+	<key>PROJECT_ID</key>
+	<string>opd-follow-up</string>
+	<key>STORAGE_BUCKET</key>
+	<string>opd-follow-up.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:194873432048:ios:73af8fa997811171c4ef35</string>
+</dict>
+</plist>

@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "194873432048",
+    "project_id": "opd-follow-up",
+    "storage_bucket": "opd-follow-up.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:194873432048:android:56513ca03911ae70c4ef35",
+        "android_client_info": {
+          "package_name": "com.example.follow_up_clinic_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "194873432048-m44dqee91c9qt4enl2j1tbvogrg4033k.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDRMofZVw_zatti6JwgmFhavfbJrRUbUFQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "194873432048-m44dqee91c9qt4enl2j1tbvogrg4033k.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "194873432048-2sjmo1b63r10ebmjcu497l4jl0iupcqg.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.followUpClinicApp.RunnerTests"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
