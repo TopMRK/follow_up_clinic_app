@@ -17,6 +17,8 @@ class _CameraPageState extends State<CameraPage> {
   bool _isRearCameraSelected = true;
   double _zoomLevel = 1.0;
   double _maxCamZoom = 0.0;
+  double? _screenwidth;
+  double? _screenheight;
 
   Future initCamera(CameraDescription cameraDescription) async {
 // create a CameraController
@@ -41,7 +43,9 @@ class _CameraPageState extends State<CameraPage> {
       return const CircularProgressIndicator();
     }
     try {
-      await _cameraController.setFlashMode(FlashMode.off);
+      if (_cameraController.value.flashMode == true) {
+        await _cameraController.setFlashMode(FlashMode.off);
+      }
       await _cameraController.setFocusMode(FocusMode.locked);
       await _cameraController.setExposureMode(ExposureMode.locked);
 
@@ -79,6 +83,8 @@ class _CameraPageState extends State<CameraPage> {
 
   @override
   Widget build(BuildContext context) {
+    _screenwidth = MediaQuery.of(context).size.width;
+    _screenheight = MediaQuery.of(context).size.height;
     return Scaffold(
         body: GestureDetector(
       onScaleUpdate: (details) async {
@@ -95,8 +101,14 @@ class _CameraPageState extends State<CameraPage> {
           (_cameraController.value.isInitialized)
               ? Transform.scale(
                   scale: _zoomLevel,
-                  child: CameraPreview(_cameraController),
-                )
+                  child: SizedBox(
+                    width: _screenwidth,
+                    height: _screenheight,
+                    child: AspectRatio(
+                      aspectRatio: _cameraController.value.aspectRatio,
+                      child: CameraPreview(_cameraController),
+                    ),
+                  ))
               : Container(
                   color: Colors.black,
                   child: const Center(child: CircularProgressIndicator())),

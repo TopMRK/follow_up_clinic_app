@@ -8,8 +8,8 @@ class LoginCubit extends Cubit<LoginState> {
   LoginCubit() : super(const LoginInitial(''));
 
   void firebaseLogin(emailAddress, password) async {
-    emit(LoginLoading('กำลังดาวน์โหลด'));
     try {
+      emit(LoginLoading('กำลังดาวน์โหลด'));
       final credential = await FirebaseAuth.instance
           .signInWithEmailAndPassword(email: emailAddress, password: password);
       emit(LoginSuccess('Login Completed'));

@@ -31,121 +31,137 @@ class _ResponseUserPageState extends State<ResponseUserPage> {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () {
-        FocusManager.instance.primaryFocus?.unfocus();
+    return BlocListener<UserPostCubit, UserPostState>(
+      listener: (context, state) {
+        if (state is UserPostSuccess) {
+          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+            content: Text('คุณได้อัพเดตข้อมูลเรียบร้อย'),
+            backgroundColor: Colors.green,
+          ));
+          return Navigator.pop(context);
+        } else if (state is UserPostError) {
+          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+            content: Text('ไม่สามารถอั'),
+            backgroundColor: Colors.green,
+          ));
+        }
       },
-      child: SingleChildScrollView(
-        child: Padding(
-          padding: EdgeInsets.fromLTRB(
-              25, 25, 25, MediaQuery.of(context).viewInsets.bottom),
-          child: Container(
-            height: MediaQuery.of(context).size.height * 0.75,
-            child: Form(
-              key: _formKey,
-              child: Column(
-                children: <Widget>[
-                  Align(
-                    alignment: Alignment.centerLeft,
-                    child: Text(
-                      'อัพเดตอาการ',
-                      style: Theme.of(context).textTheme.titleMedium,
+      child: GestureDetector(
+        onTap: () {
+          FocusManager.instance.primaryFocus?.unfocus();
+        },
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: EdgeInsets.fromLTRB(
+                25, 25, 25, MediaQuery.of(context).viewInsets.bottom),
+            child: Container(
+              height: MediaQuery.of(context).size.height * 0.75,
+              child: Form(
+                key: _formKey,
+                child: Column(
+                  children: <Widget>[
+                    Align(
+                      alignment: Alignment.centerLeft,
+                      child: Text(
+                        'อัพเดตอาการ',
+                        style: Theme.of(context).textTheme.titleMedium,
+                      ),
                     ),
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  TextFormField(
-                    keyboardType: TextInputType.multiline,
-                    minLines: 5,
-                    maxLines: null,
-                    controller: _textFieldController,
-                    decoration: const InputDecoration(
-                        labelText: 'กรุณากรอกรายละเอียด',
-                        alignLabelWithHint: true),
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'กรุณากรอกรายละเอียด';
-                      }
-                      return null;
-                    },
-                  ),
-                  const SizedBox(height: 20),
-                  OutlinedButton.icon(
-                    icon: const Icon(Icons.camera_alt),
-                    onPressed: (enableTakePhoto)
-                        ? () async {
-                            picture = await availableCameras().then((value) =>
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (_) =>
-                                            CameraPage(cameras: value))));
-                            print('--------------count image---------');
-                            print(listPicture.length);
-                            if (listPicture.length <= 4) {
-                              if (picture != null) {
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    TextFormField(
+                      keyboardType: TextInputType.multiline,
+                      minLines: 5,
+                      maxLines: null,
+                      controller: _textFieldController,
+                      decoration: const InputDecoration(
+                          labelText: 'กรุณากรอกรายละเอียด*',
+                          alignLabelWithHint: true),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'กรุณากรอกรายละเอียด';
+                        }
+                        return null;
+                      },
+                    ),
+                    const SizedBox(height: 20),
+                    OutlinedButton.icon(
+                      icon: const Icon(Icons.camera_alt),
+                      onPressed: (enableTakePhoto)
+                          ? () async {
+                              picture = await availableCameras().then((value) =>
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (_) =>
+                                              CameraPage(cameras: value))));
+                              if (listPicture.length <= 4) {
+                                if (picture != null) {
+                                  setState(() {
+                                    listPicture.add(picture!);
+                                  });
+                                }
+                              } else {
                                 setState(() {
-                                  listPicture.add(picture!);
+                                  enableTakePhoto = false;
                                 });
                               }
-                            } else {
-                              setState(() {
-                                enableTakePhoto = false;
-                              });
+                              print(enableTakePhoto);
                             }
-                            print(enableTakePhoto);
-                          }
-                        : null,
-                    label: const Text('อัพโหลดรูปภาพ'),
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  Container(
-                    child: (listPicture.isNotEmpty)
-                        ? Expanded(
-                            child: ListView.builder(
-                                shrinkWrap: true,
-                                scrollDirection: Axis.horizontal,
-                                itemCount: listPicture.length,
-                                itemBuilder: (BuildContext context, index) {
-                                  return Padding(
-                                      padding: EdgeInsets.all(5),
-                                      child: Stack(
-                                        children: [
-                                          Image.file(
-                                            File(listPicture[index].path),
-                                          ),
-                                          IconButton(
-                                            icon: const Icon(
-                                              Icons.close,
-                                              size: 15,
+                          : null,
+                      label: const Text('อัพโหลดรูปภาพ'),
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    Container(
+                      child: (listPicture.isNotEmpty)
+                          ? Expanded(
+                              child: ListView.builder(
+                                  shrinkWrap: true,
+                                  scrollDirection: Axis.horizontal,
+                                  itemCount: listPicture.length,
+                                  itemBuilder: (BuildContext context, index) {
+                                    return Padding(
+                                        padding: EdgeInsets.all(5),
+                                        child: Stack(
+                                          children: [
+                                            Image.file(
+                                              File(listPicture[index].path),
                                             ),
-                                            color: Colors.white,
-                                            onPressed: () => setState(() {
-                                              listPicture
-                                                  .remove(listPicture[index]);
-                                            }),
-                                          ),
-                                        ],
-                                      ));
-                                }))
-                        : const Text('ไม่พบรูปภาพแนบ'),
-                  ),
-                  const SizedBox(height: 20),
-                  ElevatedButton(
-                    onPressed: () {
-                      if (_formKey.currentState!.validate()) {
-                        // Process the form data here
-                        BlocProvider.of<UserPostCubit>(context).userNewPost(
-                            _textFieldController.text, listPicture, startDate);
-                        Navigator.pop(context); // Close the BottomSheet
-                      }
-                    },
-                    child: const Text('ส่งผลอาการ'),
-                  ),
-                ],
+                                            IconButton(
+                                              icon: const Icon(
+                                                Icons.close,
+                                                size: 15,
+                                              ),
+                                              color: Colors.white,
+                                              onPressed: () => setState(() {
+                                                listPicture
+                                                    .remove(listPicture[index]);
+                                              }),
+                                            ),
+                                          ],
+                                        ));
+                                  }))
+                          : const Text('ไม่พบรูปภาพแนบ'),
+                    ),
+                    const SizedBox(height: 20),
+                    ElevatedButton(
+                      onPressed: () {
+                        if (_formKey.currentState!.validate()) {
+                          // Process the form data here
+                          BlocProvider.of<UserPostCubit>(context).userNewPost(
+                              _textFieldController.text,
+                              listPicture,
+                              startDate);
+                          // Navigator.pop(context); // Close the BottomSheet
+                        }
+                      },
+                      child: const Text('ส่งผลอาการ'),
+                    ),
+                  ],
+                ),
               ),
             ),
           ),

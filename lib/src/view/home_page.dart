@@ -4,8 +4,9 @@ import 'package:follow_up_clinic_app/src/bloc/cubit/authentication/authenticatio
 import 'package:follow_up_clinic_app/src/bloc/cubit/user_post/user_post_cubit.dart';
 import 'package:follow_up_clinic_app/src/bloc/cubit/homepage/homepage_cubit.dart';
 import 'package:follow_up_clinic_app/src/route/routes.dart';
+import 'package:follow_up_clinic_app/src/view/home_content_page.dart';
+import 'package:follow_up_clinic_app/src/view/logout_confirmation_page.dart';
 import 'package:follow_up_clinic_app/src/view/response_user_page.dart';
-import 'package:intl/intl.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -16,6 +17,8 @@ class HomePage extends StatefulWidget {
 
 class _HomePage extends State<HomePage> {
   late AuthenticationCubit authbloc;
+  final LogoutConfirmationPage _logoutConfirmationPage =
+      LogoutConfirmationPage();
 
   @override
   void initState() {
@@ -38,15 +41,23 @@ class _HomePage extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<AuthenticationCubit, AuthenticationState>(
-      listener: (context, state) {
-        if (state is AuthenticationSuccess) {
-          BlocProvider.of<HomepageCubit>(context).getMedicalHistory();
-        } else if (state is AuthenticationFail) {
-          Navigator.pushNamedAndRemoveUntil(
-              context, Routes.login, (Route<dynamic> route) => false);
-        }
-      },
+    return MultiBlocListener(
+      listeners: [
+        BlocListener<AuthenticationCubit, AuthenticationState>(
+            listener: (context, state) {
+          if (state is AuthenticationSuccess) {
+            BlocProvider.of<HomepageCubit>(context).getMedicalHistory();
+          } else if (state is AuthenticationFail) {
+            Navigator.pushNamedAndRemoveUntil(
+                context, Routes.login, (Route<dynamic> route) => false);
+          }
+        }),
+        BlocListener<UserPostCubit, UserPostState>(listener: (context, state) {
+          if (state is UserPostSuccess) {
+            BlocProvider.of<HomepageCubit>(context).getMedicalHistory();
+          }
+        })
+      ],
       child: Scaffold(
           body: Stack(
         children: <Widget>[
@@ -80,7 +91,7 @@ class _HomePage extends State<HomePage> {
                   children: <Widget>[
                     const Align(
                       alignment: Alignment.centerLeft,
-                      child: Text('OPD MED HEALTH',
+                      child: Text('ศูนย์ตาธรรมศาสตร์, TU EYE',
                           style: TextStyle(fontSize: 30)),
                     ),
                     Align(
@@ -90,7 +101,8 @@ class _HomePage extends State<HomePage> {
                           Icons.logout,
                           color: Colors.blue,
                         ),
-                        onPressed: () => authbloc.authenticationLogout(),
+                        onPressed: () => _logoutConfirmationPage
+                            .showAlertDialog(context, authbloc),
                       ),
                     )
                   ],
@@ -122,7 +134,12 @@ class _HomePage extends State<HomePage> {
                             child: const ResponseUserPage(),
                           );
                         },
-                      );
+                      ).then((value) {
+                        setState(() {
+                          BlocProvider.of<HomepageCubit>(context)
+                              .getMedicalHistory();
+                        });
+                      });
                     },
                     icon: const Icon(Icons.add_circle_rounded),
                     label: const Text('อัพเดตอาการ'),
@@ -138,115 +155,11 @@ class _HomePage extends State<HomePage> {
                 BlocBuilder<HomepageCubit, HomepageState>(
                     builder: (context, state) {
                   if (state is HomepageSuccess) {
-                    return Expanded(
-                        child: ListView.builder(
-                            itemCount: state.data.length,
-                            itemBuilder: (BuildContext context, index) {
-                              return Card(
-                                margin: EdgeInsets.all(5),
-                                child: Container(
-                                  margin: EdgeInsets.all(10),
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Row(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Expanded(
-                                            flex: 1,
-                                            child: Padding(
-                                              padding: EdgeInsets.all(5),
-                                              child: Text(
-                                                  style: Theme.of(context)
-                                                      .textTheme
-                                                      .bodyLarge,
-                                                  DateFormat()
-                                                      .add_yMMMMd()
-                                                      .format(state.data[index]
-                                                              ['created_at']
-                                                          .toDate())),
-                                            ),
-                                          ),
-                                          Expanded(
-                                            flex: 2,
-                                            child: Padding(
-                                              padding: EdgeInsets.all(5),
-                                              child: Column(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                children: [
-                                                  Container(
-                                                    margin:
-                                                        const EdgeInsets.only(
-                                                            bottom: 5),
-                                                    child: Text(
-                                                      'รายละเอียด',
-                                                      style: Theme.of(context)
-                                                          .textTheme
-                                                          .bodyLarge,
-                                                    ),
-                                                  ),
-                                                  SizedBox(
-                                                      height: 100,
-                                                      child: GridView.builder(
-                                                          physics:
-                                                              const NeverScrollableScrollPhysics(),
-                                                          gridDelegate:
-                                                              const SliverGridDelegateWithFixedCrossAxisCount(
-                                                            crossAxisCount: 2,
-                                                          ),
-                                                          itemCount: state
-                                                              .data[index]
-                                                                  ['image']
-                                                              .length,
-                                                          itemBuilder:
-                                                              (BuildContext
-                                                                      context,
-                                                                  ind) {
-                                                            return Container(
-                                                              height: 300,
-                                                              width: 200,
-                                                              margin: EdgeInsets
-                                                                  .only(
-                                                                      right: 5),
-                                                              decoration: BoxDecoration(
-                                                                  image: DecorationImage(
-                                                                      fit: BoxFit
-                                                                          .cover,
-                                                                      image: NetworkImage(state.data[index]
-                                                                              [
-                                                                              'image']
-                                                                          [
-                                                                          ind]))),
-                                                            );
-                                                          })),
-                                                  Padding(
-                                                    padding:
-                                                        EdgeInsets.fromLTRB(
-                                                            0, 10, 0, 20),
-                                                    child: Text(
-                                                      state.data[index]
-                                                          ['description'],
-                                                      maxLines: 10,
-                                                      overflow:
-                                                          TextOverflow.fade,
-                                                      softWrap: false,
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                          ),
-                                        ],
-                                      )
-                                    ],
-                                  ),
-                                ),
-                              );
-                              // return Text(state.data[index]['uid']);
-                            }));
+                    return HomeContentPage(state: state);
+                  } else if (state is HomepageLoading) {
+                    return const Center(
+                      child: CircularProgressIndicator(),
+                    );
                   } else {
                     return Container(
                       padding: const EdgeInsets.all(10),

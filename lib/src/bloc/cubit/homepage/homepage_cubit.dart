@@ -12,9 +12,12 @@ class HomepageCubit extends Cubit<HomepageState> {
     final FirebaseAuth auth = FirebaseAuth.instance;
     final db = FirebaseFirestore.instance;
 
+    emit(HomepageLoading());
+
     db
         .collection('posts')
         .where('uid', isEqualTo: auth.currentUser!.uid)
+        .orderBy('created_at', descending: true)
         .get()
         .then(
       (querySnapshot) {

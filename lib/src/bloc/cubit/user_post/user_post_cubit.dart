@@ -13,7 +13,7 @@ part 'user_post_state.dart';
 class UserPostCubit extends Cubit<UserPostState> {
   UserPostCubit() : super(UserPostInitial());
 
-  void userNewPost(
+  Future<void> userNewPost(
       String description, List<XFile> images, DateTime startDate) async {
     final db = FirebaseFirestore.instance;
     // final storage = FirebaseStorage.instance;
@@ -21,21 +21,21 @@ class UserPostCubit extends Cubit<UserPostState> {
     final storageRef = FirebaseStorage.instance.ref();
     List<String> imageURL = [];
 
-    emit(UserPostLoading());
-
-    await Future.wait(images.map((image) async {
-      final imagesRef = storageRef.child(image.name);
-      final spaceRef = storageRef.child("images/${image.name}");
-      try {
-        await imagesRef.putFile(File(image.path));
-      } catch (e) {
-        print(e);
-      }
-      String url = (await imagesRef.getDownloadURL()).toString();
-      imageURL.add(url);
-    }));
-
     try {
+      emit(UserPostLoading());
+
+      await Future.wait(images.map((image) async {
+        final imagesRef = storageRef.child(image.name);
+        final spaceRef = storageRef.child("images/${image.name}");
+        try {
+          await imagesRef.putFile(File(image.path));
+        } catch (e) {
+          print(e);
+        }
+        String url = (await imagesRef.getDownloadURL()).toString();
+        imageURL.add(url);
+      }));
+
       UserPostModel post = UserPostModel(
           uid: auth.currentUser!.uid,
           startCratedPost: startDate,
@@ -45,9 +45,10 @@ class UserPostCubit extends Cubit<UserPostState> {
       db.collection('posts').add(post.toMap()).then((DocumentReference doc) =>
           print('DocumentSnapshot added with ID: ${doc.id}'));
 
-      // emit(UserPostSuccess());
-    } catch (e) {
-      // emit(UserPostError());
+      emit(UserPostSuccess());
+    } on FirebaseException catch (e) {
+      print(e);
+      emit(UserPostError());
     }
   }
 }

@@ -22,7 +22,7 @@ void main() async {
 
   runApp(
     MaterialApp(
-      title: 'OPD Health MED',
+      title: 'TU EYE',
       theme: AppTheme.lightTheme,
       initialRoute: routes.Routes.home,
       onGenerateRoute: handleRoute.generateRoute,
