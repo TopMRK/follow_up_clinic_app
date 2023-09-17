@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:email_validator/email_validator.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:follow_up_clinic_app/src/bloc/cubit/reset_password/reset_password_cubit.dart';
 
 class ResetPassword extends StatefulWidget {
   ResetPassword({super.key});
@@ -27,6 +30,13 @@ class _ResetPassword extends State<ResetPassword> {
                 Form(
                   key: _formKey,
                   child: TextFormField(
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'กรุณาระบุอีเมลของท่าน';
+                      } else if (!EmailValidator.validate(value)) {
+                        return 'กรุณาระบุอีเมลให้ถูกต้อง';
+                      }
+                    },
                     controller: _resetPasswordController,
                     decoration: const InputDecoration(
                         label: Text('อีเมล*'), border: OutlineInputBorder()),
@@ -35,13 +45,33 @@ class _ResetPassword extends State<ResetPassword> {
                 const SizedBox(
                   height: 15,
                 ),
-                ElevatedButton(
-                    onPressed: () {
-                      if (_formKey.currentState!.validate()) {
-                        print('reset Password');
-                      }
-                    },
-                    child: const Text('รีเซตรหัสผ่าน')),
+                BlocBuilder<ResetPasswordCubit, ResetPasswordState>(
+                    builder: (context, state) {
+                  if (state is ResetPasswordError) {
+                    return Text(state.message);
+                  } else if (state is ResetPasswordSuccess) {
+                    return const Text(
+                        'ได้ทำการส่งอีเมลสำหรับรีเซตรหัสผ่านไปทางอีเมลเรียบร้อย');
+                  } else {
+                    return const Text('');
+                  }
+                }),
+                BlocBuilder<ResetPasswordCubit, ResetPasswordState>(
+                    builder: (context, state) {
+                  if (state is ResetPasswordLoading) {
+                    return const CircularProgressIndicator();
+                  } else {
+                    return ElevatedButton(
+                        onPressed: () {
+                          if (_formKey.currentState!.validate()) {
+                            BlocProvider.of<ResetPasswordCubit>(context)
+                                .sendResetPassword(
+                                    _resetPasswordController.text);
+                          }
+                        },
+                        child: const Text('รีเซตรหัสผ่าน'));
+                  }
+                }),
               ],
             ),
           ),

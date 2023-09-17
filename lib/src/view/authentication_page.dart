@@ -55,6 +55,7 @@ class _AuthenticationPage extends State<AuthenticationPage>
                 child: Image.asset(
                   'assets/images/logo.png',
                   fit: BoxFit.contain,
+                  height: 150,
                 ),
               ),
             ],

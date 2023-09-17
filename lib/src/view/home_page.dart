@@ -89,17 +89,19 @@ class _HomePage extends State<HomePage> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
-                    const Align(
+                    Align(
                       alignment: Alignment.centerLeft,
-                      child: Text('ศูนย์ตาธรรมศาสตร์, TU EYE',
-                          style: TextStyle(fontSize: 30)),
+                      child: Text('TU EYE',
+                          style: TextStyle(
+                            fontSize: 30,
+                          )),
                     ),
                     Align(
                       alignment: Alignment.centerRight,
                       child: IconButton(
                         icon: const Icon(
                           Icons.logout,
-                          color: Colors.blue,
+                          color: Color(0xFFdf9929),
                         ),
                         onPressed: () => _logoutConfirmationPage
                             .showAlertDialog(context, authbloc),

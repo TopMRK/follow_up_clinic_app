@@ -1,9 +1,6 @@
-import 'dart:io';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:camera/camera.dart';
-import 'package:follow_up_clinic_app/src/view/preview_page.dart';
 
 class CameraPage extends StatefulWidget {
   final List<CameraDescription>? cameras;
@@ -19,6 +16,7 @@ class _CameraPageState extends State<CameraPage> {
   double _maxCamZoom = 0.0;
   double? _screenwidth;
   double? _screenheight;
+  bool _lefteye = true;
 
   Future initCamera(CameraDescription cameraDescription) async {
 // create a CameraController
@@ -124,23 +122,30 @@ class _CameraPageState extends State<CameraPage> {
               ),
             ),
           ),
-          Align(
+          Container(
+            margin: const EdgeInsets.all(20),
             alignment: Alignment.topCenter,
-            child: Row(
-              children: <Widget>[
-                OutlinedButton(onPressed: () {}, child: const Text('ตาซ้าย')),
-                OutlinedButton(onPressed: () {}, child: const Text('ตาขวา')),
-              ],
+            child: Text(
+              (_lefteye == true)
+                  ? 'กรุณาวางตาซ้ายให้ตรงกับกรอบรูปภาพ'
+                  : 'กรุณาวางตาขวาให้ตรงกับกรอบรูปภาพ',
+              style: Theme.of(context).textTheme.labelLarge,
             ),
+          ),
+          Container(
+            alignment: Alignment.center,
+            child: Image.asset((_lefteye == true)
+                ? 'assets/images/Left.png'
+                : 'assets/images/Right.png'),
           ),
           Align(
               alignment: Alignment.bottomCenter,
               child: Container(
                 height: MediaQuery.of(context).size.height * 0.20,
-                decoration: const BoxDecoration(
+                decoration: BoxDecoration(
                     borderRadius:
                         BorderRadius.vertical(top: Radius.circular(24)),
-                    color: Colors.black),
+                    color: Colors.black.withOpacity(0.7)),
                 child: Row(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
@@ -168,7 +173,37 @@ class _CameraPageState extends State<CameraPage> {
                         constraints: const BoxConstraints(),
                         icon: const Icon(Icons.circle, color: Colors.white),
                       )),
-                      const Spacer(),
+                      Expanded(
+                        child: Column(
+                          children: <Widget>[
+                            const SizedBox(
+                              height: 30,
+                            ),
+                            TextButton(
+                                style: TextButton.styleFrom(
+                                  foregroundColor:
+                                      Theme.of(context).colorScheme.secondary,
+                                ),
+                                onPressed: () {
+                                  setState(() {
+                                    _lefteye = true;
+                                  });
+                                },
+                                child: const Text('ตาซ้าย')),
+                            TextButton(
+                                style: TextButton.styleFrom(
+                                  foregroundColor:
+                                      Theme.of(context).colorScheme.secondary,
+                                ),
+                                onPressed: () {
+                                  setState(() {
+                                    _lefteye = false;
+                                  });
+                                },
+                                child: const Text('ตาขวา')),
+                          ],
+                        ),
+                      ),
                     ]),
               )),
         ])),

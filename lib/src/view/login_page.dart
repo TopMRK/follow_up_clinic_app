@@ -52,8 +52,7 @@ class _LoginPage extends State<LoginPage> {
                       validator: (value) {
                         if (value == null || value.isEmpty) {
                           return 'กรุณากรอกอีเมล';
-                        } else if (!EmailValidator.validate(
-                            _emailController.text)) {
+                        } else if (!EmailValidator.validate(value)) {
                           return 'กรุณากรอกอีเมลให้ถูกต้อง';
                         }
                       },
