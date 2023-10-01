@@ -53,6 +53,7 @@ class _RegisterPage extends State<RegisterPage> {
           _birthdayController.text = '';
           _hnController.text = '';
           _addressController.text = '';
+          _passwordConfirmationController.text = '';
         } else if (state is RegisterError) {
           ScaffoldMessenger.of(context).showSnackBar(SnackBar(
             content: Text(state.message),

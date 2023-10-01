@@ -1,4 +1,4 @@
-package com.example.follow_up_clinic_app
+package com.tu.tu_eye
 
 import io.flutter.embedding.android.FlutterActivity
 

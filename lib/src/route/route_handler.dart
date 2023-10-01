@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:follow_up_clinic_app/src/bloc/cubit/authentication/authentication_cubit.dart';
 import 'package:follow_up_clinic_app/src/bloc/cubit/homepage/homepage_cubit.dart';
+import 'package:follow_up_clinic_app/src/bloc/cubit/internet_checker/internet_checker_cubit.dart';
 import 'package:follow_up_clinic_app/src/bloc/cubit/login_cubit.dart';
 import 'package:follow_up_clinic_app/src/bloc/cubit/register_cubit.dart';
 import 'package:follow_up_clinic_app/src/bloc/cubit/reset_password/reset_password_cubit.dart';
@@ -9,6 +10,7 @@ import 'package:follow_up_clinic_app/src/bloc/cubit/user_post/user_post_cubit.da
 import 'package:follow_up_clinic_app/src/view/admin_home_page.dart';
 import 'package:follow_up_clinic_app/src/view/authentication_page.dart';
 import 'package:follow_up_clinic_app/src/view/home_page.dart';
+import 'package:follow_up_clinic_app/src/view/preview_page.dart';
 import 'package:follow_up_clinic_app/src/view/reset_password.dart';
 import 'routes.dart';
 
@@ -35,6 +37,8 @@ Route<dynamic> generateRoute(RouteSettings settings) {
                 ),
                 BlocProvider<UserPostCubit>(
                     create: (context) => UserPostCubit()),
+                BlocProvider<InternetCheckerCubit>(
+                    create: (context) => InternetCheckerCubit()),
               ], child: HomePage()));
     case Routes.resetPassword:
       return MaterialPageRoute(

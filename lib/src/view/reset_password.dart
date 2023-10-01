@@ -48,10 +48,16 @@ class _ResetPassword extends State<ResetPassword> {
                 BlocBuilder<ResetPasswordCubit, ResetPasswordState>(
                     builder: (context, state) {
                   if (state is ResetPasswordError) {
-                    return Text(state.message);
+                    return Text(
+                      state.message,
+                      style: const TextStyle(color: Colors.red),
+                    );
                   } else if (state is ResetPasswordSuccess) {
-                    return const Text(
-                        'ได้ทำการส่งอีเมลสำหรับรีเซตรหัสผ่านไปทางอีเมลเรียบร้อย');
+                    return Text(
+                      'ได้ทำการส่งอีเมลสำหรับรีเซตรหัสผ่านไปทางอีเมลเรียบร้อย',
+                      style: TextStyle(
+                          color: Theme.of(context).colorScheme.primary),
+                    );
                   } else {
                     return const Text('');
                   }

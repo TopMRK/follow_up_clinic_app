@@ -8,4 +8,5 @@ abstract class Routes {
   static const String responsePost = 'responsePost';
   static const String resetPassword = 'resetPassword';
   static const String adminHome = 'adminHome';
+  static const String previewImage = 'previewImage';
 }

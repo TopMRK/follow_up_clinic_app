@@ -30,7 +30,7 @@ class AuthenticationCubit extends Cubit<AuthenticationState> {
       docRef.get().then(
         (DocumentSnapshot doc) {
           data = doc.data() as Map<String, dynamic>;
-          emit(AuthenticationSuccess(data['firstname']));
+          emit(AuthenticationSuccess(data['firstname'], data['role']));
         },
         onError: (e) => print("Error getting document: $e"),
       );

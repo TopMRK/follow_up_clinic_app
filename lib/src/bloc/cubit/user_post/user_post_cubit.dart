@@ -7,6 +7,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:equatable/equatable.dart';
 import 'package:follow_up_clinic_app/src/model/user_post_model.dart';
+import 'package:internet_connection_checker/internet_connection_checker.dart';
 
 part 'user_post_state.dart';
 
@@ -14,40 +15,51 @@ class UserPostCubit extends Cubit<UserPostState> {
   UserPostCubit() : super(UserPostInitial());
 
   Future<void> userNewPost(
-      String description, List<XFile> images, DateTime startDate) async {
+      String description, List images, DateTime startDate) async {
     final db = FirebaseFirestore.instance;
     // final storage = FirebaseStorage.instance;
     final FirebaseAuth auth = FirebaseAuth.instance;
     final storageRef = FirebaseStorage.instance.ref();
-    List<String> imageURL = [];
+    List<dynamic> imageURL = [];
 
-    try {
-      emit(UserPostLoading());
+    final result = await InternetConnectionChecker().hasConnection;
 
-      await Future.wait(images.map((image) async {
-        final imagesRef = storageRef.child(image.name);
-        final spaceRef = storageRef.child("images/${image.name}");
-        try {
-          await imagesRef.putFile(File(image.path));
-        } catch (e) {
-          print(e);
-        }
-        String url = (await imagesRef.getDownloadURL()).toString();
-        imageURL.add(url);
-      }));
+    if (result) {
+      try {
+        emit(UserPostLoading());
 
-      UserPostModel post = UserPostModel(
-          uid: auth.currentUser!.uid,
-          startCratedPost: startDate,
-          description: description,
-          imageURL: imageURL);
+        await Future.wait(images.map((image) async {
+          // final imagesRef = storageRef.child(image.name);
+          print('llllllllllllllllllllllllllllllll');
+          print(image);
+          print(image['picture'].name);
+          final spaceRef = storageRef
+              .child("${auth.currentUser!.uid}/${image['picture'].name}");
+          try {
+            await spaceRef.putFile(File(image['picture'].path));
+          } catch (e) {
+            print(e);
+          }
+          String url = (await spaceRef.getDownloadURL()).toString();
+          dynamic value = {'url': url, 'left_eye': image['left_eye']};
+          imageURL.add(value);
+        }));
 
-      db.collection('posts').add(post.toMap()).then((DocumentReference doc) =>
-          print('DocumentSnapshot added with ID: ${doc.id}'));
+        UserPostModel post = UserPostModel(
+            uid: auth.currentUser!.uid,
+            startCratedPost: startDate,
+            description: description,
+            imageURL: imageURL);
 
-      emit(UserPostSuccess());
-    } on FirebaseException catch (e) {
-      print(e);
+        db.collection('posts').add(post.toMap()).then((DocumentReference doc) =>
+            print('DocumentSnapshot added with ID: ${doc.id}'));
+
+        emit(UserPostSuccess());
+      } on FirebaseException catch (e) {
+        print(e);
+        emit(UserPostError());
+      }
+    } else {
       emit(UserPostError());
     }
   }

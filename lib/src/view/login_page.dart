@@ -25,7 +25,7 @@ class _LoginPage extends State<LoginPage> {
 
   @override
   void dispose() {
-    loginCubit.close();
+    // loginCubit.close();
     super.dispose();
   }
 

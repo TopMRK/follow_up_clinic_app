@@ -35,7 +35,7 @@ class Register extends Equatable {
       'birthday': birthday,
       'hn': hn,
       'address': address,
-      'role': 3,
+      'role': 'user',
       'created_at': DateTime.now(),
       'updated_at': DateTime.now(),
     };

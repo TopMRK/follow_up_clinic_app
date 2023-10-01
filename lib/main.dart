@@ -1,3 +1,7 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:intl/intl.dart';
@@ -17,6 +21,18 @@ void main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
+  if (kDebugMode) {
+    print('Firebase in debug mode');
+    try {
+      FirebaseFirestore.instance.useFirestoreEmulator('localhost', 8080);
+      await FirebaseAuth.instance.useAuthEmulator('localhost', 9099);
+      await FirebaseStorage.instance.useStorageEmulator('localhost', 9199);
+    } catch (e) {
+      // ignore: avoid_print
+      print(e);
+    }
+  }
+
   Intl.defaultLocale = 'th_TH';
   await initializeDateFormatting('th_TH', null);
 
@@ -24,6 +40,7 @@ void main() async {
     MaterialApp(
       title: 'TU EYE',
       theme: AppTheme.lightTheme,
+      debugShowCheckedModeBanner: false,
       initialRoute: routes.Routes.home,
       onGenerateRoute: handleRoute.generateRoute,
     ),

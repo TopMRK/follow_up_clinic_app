@@ -14,7 +14,8 @@ final class AuthenticationLoading extends AuthenticationState {}
 final class AuthenticationFail extends AuthenticationState {}
 
 final class AuthenticationSuccess extends AuthenticationState {
-  const AuthenticationSuccess(this.data);
+  const AuthenticationSuccess(this.data, this.role);
 
   final String data;
+  final String role;
 }

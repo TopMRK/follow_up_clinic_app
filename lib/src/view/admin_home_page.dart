@@ -63,8 +63,7 @@ class _AdminHomePage extends State<AdminHomePage> {
                 children: <Widget>[
                   const Align(
                     alignment: Alignment.centerLeft,
-                    child:
-                        Text('OPD MED HEALTH', style: TextStyle(fontSize: 30)),
+                    child: Text('TU Eye', style: TextStyle(fontSize: 30)),
                   ),
                   Align(
                     alignment: Alignment.centerRight,
@@ -111,9 +110,24 @@ class _AdminHomePage extends State<AdminHomePage> {
               const SizedBox(
                 height: 30,
               ),
-              const Align(
+              Align(
                 alignment: Alignment.topLeft,
-                child: Text('รายชื่อคนไข้'),
+                child: Row(
+                  children: [
+                    ElevatedButton(
+                      onPressed: () {},
+                      style: ButtonStyle(
+                          backgroundColor:
+                              MaterialStateProperty.all<Color>(Colors.red)),
+                      child: const Text('แจ้งเตือนใหม่'),
+                    ),
+                    const SizedBox(
+                      width: 5,
+                    ),
+                    ElevatedButton(
+                        onPressed: () {}, child: const Text('คนไข้ทั้งหมด')),
+                  ],
+                ),
               ),
             ],
           ),

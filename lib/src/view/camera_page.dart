@@ -51,7 +51,9 @@ class _CameraPageState extends State<CameraPage> {
 
       XFile picture = await _cameraController.takePicture();
 
-      Navigator.pop(context, picture);
+      dynamic value = {'picture': picture, 'left_eye': _lefteye};
+
+      Navigator.pop(context, value);
     } on CameraException catch (e) {
       debugPrint('Error occured while taking picture: $e');
       return null;

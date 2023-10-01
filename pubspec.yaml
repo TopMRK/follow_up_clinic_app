@@ -46,6 +46,8 @@ dependencies:
   path_provider: ^2.1.1
   firebase_storage: ^11.2.6
   internet_connection_checker: ^1.0.0+1
+  flutter_launcher_icons: ^0.13.1
+  photo_view: ^0.14.0
 
 dev_dependencies:
   flutter_test:
@@ -62,6 +64,14 @@ dev_dependencies:
 # following page: https://dart.dev/tools/pub/pubspec
 
 # The following section is specific to Flutter packages.
+
+flutter_icons:
+  android: true
+  ios: true
+  image_path: "assets/images/Logo_GP_Store.jpg"
+  adaptive_icon_background: "#fdfdfd"
+  adaptive_icon_foreground: "assets/images/ic_launcher_foreground.png"
+
 flutter:
 
   # The following line ensures that the Material Icons font is

@@ -18,8 +18,8 @@ class _ResponseUserPageState extends State<ResponseUserPage> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   TextEditingController _textFieldController = TextEditingController();
 
-  XFile? picture;
-  List<XFile> listPicture = [];
+  dynamic picture;
+  List listPicture = [];
 
   bool enableTakePhoto = true;
 
@@ -41,9 +41,10 @@ class _ResponseUserPageState extends State<ResponseUserPage> {
           return Navigator.pop(context);
         } else if (state is UserPostError) {
           ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-            content: Text('ไม่สามารถอั'),
-            backgroundColor: Colors.green,
+            content: Text('ไม่สามารถอัพโหลดข้อมูลได้ กรุณาลองใหม่อีกครั้ง'),
+            backgroundColor: Colors.red,
           ));
+          return Navigator.pop(context);
         }
       },
       child: GestureDetector(
@@ -107,7 +108,6 @@ class _ResponseUserPageState extends State<ResponseUserPage> {
                                   enableTakePhoto = false;
                                 });
                               }
-                              print(enableTakePhoto);
                             }
                           : null,
                       label: const Text('อัพโหลดรูปภาพ'),
@@ -128,7 +128,8 @@ class _ResponseUserPageState extends State<ResponseUserPage> {
                                         child: Stack(
                                           children: [
                                             Image.file(
-                                              File(listPicture[index].path),
+                                              File(listPicture[index]['picture']
+                                                  .path),
                                             ),
                                             IconButton(
                                               icon: const Icon(
