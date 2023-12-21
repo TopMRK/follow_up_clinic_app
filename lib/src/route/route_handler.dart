@@ -4,6 +4,7 @@ import 'package:follow_up_clinic_app/src/bloc/cubit/authentication/authenticatio
 import 'package:follow_up_clinic_app/src/bloc/cubit/homepage/homepage_cubit.dart';
 import 'package:follow_up_clinic_app/src/bloc/cubit/internet_checker/internet_checker_cubit.dart';
 import 'package:follow_up_clinic_app/src/bloc/cubit/login_cubit.dart';
+import 'package:follow_up_clinic_app/src/bloc/cubit/patient_overview/patient_overview_cubit.dart';
 import 'package:follow_up_clinic_app/src/bloc/cubit/register_cubit.dart';
 import 'package:follow_up_clinic_app/src/bloc/cubit/reset_password/reset_password_cubit.dart';
 import 'package:follow_up_clinic_app/src/bloc/cubit/user_post/user_post_cubit.dart';
@@ -47,7 +48,17 @@ Route<dynamic> generateRoute(RouteSettings settings) {
                 child: ResetPassword(),
               ));
     case Routes.adminHome:
-      return MaterialPageRoute(builder: (context) => AdminHomePage());
+      return MaterialPageRoute(
+          builder: (context) => MultiBlocProvider(
+                providers: [
+                  BlocProvider<AuthenticationCubit>(
+                      create: (context) => AuthenticationCubit()),
+                  BlocProvider<PatientOverviewCubit>(
+                    create: (context) => PatientOverviewCubit(),
+                  )
+                ],
+                child: AdminHomePage(),
+              ));
     default:
       return MaterialPageRoute(
           builder: (context) => const AuthenticationPage());

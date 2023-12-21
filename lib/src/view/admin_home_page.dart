@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:follow_up_clinic_app/src/bloc/cubit/authentication/authentication_cubit.dart';
-import 'package:follow_up_clinic_app/src/bloc/cubit/user_post/user_post_cubit.dart';
+import 'package:follow_up_clinic_app/src/bloc/cubit/patient_overview/patient_overview_cubit.dart';
 import 'package:follow_up_clinic_app/src/route/routes.dart';
-import 'package:follow_up_clinic_app/src/view/response_user_page.dart';
+import 'package:follow_up_clinic_app/src/view/admin_patient_overview_page.dart';
+import 'package:follow_up_clinic_app/src/view/logout_confirmation_page.dart';
 
 class AdminHomePage extends StatefulWidget {
   const AdminHomePage({super.key});
@@ -14,17 +15,20 @@ class AdminHomePage extends StatefulWidget {
 
 class _AdminHomePage extends State<AdminHomePage> {
   late AuthenticationCubit authbloc;
+  final LogoutConfirmationPage _logoutConfirmationPage =
+      LogoutConfirmationPage();
 
   @override
   void initState() {
     super.initState();
-    // authbloc = BlocProvider.of<AuthenticationCubit>(context);
+    authbloc = BlocProvider.of<AuthenticationCubit>(context);
     // authbloc.authenticationLogin();
+    BlocProvider.of<PatientOverviewCubit>(context).getPatientAll();
   }
 
   @override
   void dispose() {
-    // authbloc.close();
+    authbloc.close();
     super.dispose();
   }
 
@@ -57,6 +61,8 @@ class _AdminHomePage extends State<AdminHomePage> {
         Padding(
           padding: EdgeInsets.fromLTRB(10, 45, 10, 10),
           child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -72,12 +78,13 @@ class _AdminHomePage extends State<AdminHomePage> {
                         Icons.logout,
                         color: Colors.blue,
                       ),
-                      onPressed: () => authbloc.authenticationLogout(),
+                      onPressed: () => _logoutConfirmationPage.showAlertDialog(
+                          context, authbloc),
                     ),
                   )
                 ],
               ),
-              Align(
+              const Align(
                 alignment: Alignment.topLeft,
                 child: Text('สวัสดี, คุณ เจ้าหน้าที่'),
               ),
@@ -129,6 +136,25 @@ class _AdminHomePage extends State<AdminHomePage> {
                   ],
                 ),
               ),
+              const SizedBox(
+                height: 5,
+              ),
+              Container(
+                padding: const EdgeInsets.all(5),
+                child: const Text('รายการผู้ป่วย'),
+              ),
+              BlocBuilder<PatientOverviewCubit, PatientOverviewState>(
+                  builder: (context, state) {
+                if (state is PatientOverviewSuccess) {
+                  return AdminPatientOverviewPage(data: state.data);
+                } else if (state is PatientOverviewLoading) {
+                  return const CircularProgressIndicator();
+                } else if (state is PatientOverviewError) {
+                  return Text(state.message);
+                } else {
+                  return const Text('ไม่พบข้อมูลผู้ป่วย');
+                }
+              }),
             ],
           ),
         ),

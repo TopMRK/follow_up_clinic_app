@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:follow_up_clinic_app/src/bloc/cubit/authentication/authentication_cubit.dart';
+import 'package:follow_up_clinic_app/src/route/routes.dart';
 
 class LogoutConfirmationPage {
   late AuthenticationCubit authbloc;
@@ -10,7 +11,11 @@ class LogoutConfirmationPage {
         child: const Text('ยกเลิก'));
 
     Widget confirmButton = TextButton(
-        onPressed: () => authbloc.authenticationLogout(),
+        onPressed: () {
+          authbloc.authenticationLogout();
+          Navigator.pushNamedAndRemoveUntil(
+              context, Routes.login, (Route<dynamic> route) => false);
+        },
         child: const Text(
           'ยืนยัน',
           style: TextStyle(color: Colors.red),

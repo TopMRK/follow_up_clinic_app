@@ -24,7 +24,7 @@ void main() async {
   if (kDebugMode) {
     print('Firebase in debug mode');
     try {
-      FirebaseFirestore.instance.useFirestoreEmulator('localhost', 8080);
+      FirebaseFirestore.instance.useFirestoreEmulator('localhost', 8089);
       await FirebaseAuth.instance.useAuthEmulator('localhost', 9099);
       await FirebaseStorage.instance.useStorageEmulator('localhost', 9199);
     } catch (e) {
