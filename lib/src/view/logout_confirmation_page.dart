@@ -22,8 +22,8 @@ class LogoutConfirmationPage {
         ));
 
     AlertDialog alert = AlertDialog(
-      title: Text('ยืนยันออกจากระบบ'),
-      content: Text('คุณต้องการออกจากระบบใช่หรือไม่ ?'),
+      title: const Text('ยืนยันออกจากระบบ'),
+      content: const Text('คุณต้องการออกจากระบบใช่หรือไม่ ?'),
       actions: [confirmButton, cancelButton],
     );
 

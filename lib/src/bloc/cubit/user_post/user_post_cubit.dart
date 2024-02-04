@@ -30,9 +30,6 @@ class UserPostCubit extends Cubit<UserPostState> {
 
         await Future.wait(images.map((image) async {
           // final imagesRef = storageRef.child(image.name);
-          print('llllllllllllllllllllllllllllllll');
-          print(image);
-          print(image['picture'].name);
           final spaceRef = storageRef
               .child("${auth.currentUser!.uid}/${image['picture'].name}");
           try {

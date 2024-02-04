@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:follow_up_clinic_app/src/model/patient_overview_model.dart';
+import 'package:follow_up_clinic_app/src/route/routes.dart';
 
 class AdminPatientOverviewPage extends StatefulWidget {
   const AdminPatientOverviewPage({super.key, this.data});
@@ -20,7 +21,9 @@ class _AdminPatientOverviewPage extends State<AdminPatientOverviewPage> {
             shrinkWrap: true,
             itemBuilder: (context, index) {
               return InkWell(
-                onTap: () => print('Click it'),
+                onTap: () => Navigator.pushNamed(
+                    context, Routes.adminPatientDetail,
+                    arguments: {'uid': data[index].userId}),
                 child: Card(
                     child: Padding(
                   padding: const EdgeInsets.all(10),

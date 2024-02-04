@@ -9,6 +9,7 @@ import 'package:follow_up_clinic_app/src/bloc/cubit/register_cubit.dart';
 import 'package:follow_up_clinic_app/src/bloc/cubit/reset_password/reset_password_cubit.dart';
 import 'package:follow_up_clinic_app/src/bloc/cubit/user_post/user_post_cubit.dart';
 import 'package:follow_up_clinic_app/src/view/admin_home_page.dart';
+import 'package:follow_up_clinic_app/src/view/admin_patient_detail.dart';
 import 'package:follow_up_clinic_app/src/view/authentication_page.dart';
 import 'package:follow_up_clinic_app/src/view/home_page.dart';
 import 'package:follow_up_clinic_app/src/view/preview_page.dart';
@@ -59,6 +60,9 @@ Route<dynamic> generateRoute(RouteSettings settings) {
                 ],
                 child: AdminHomePage(),
               ));
+    case Routes.adminPatientDetail:
+      return MaterialPageRoute(
+          settings: settings, builder: (context) => const AdminPatientDetail());
     default:
       return MaterialPageRoute(
           builder: (context) => const AuthenticationPage());

@@ -26,14 +26,13 @@ class PatientOverviewCubit extends Cubit<PatientOverviewState> {
             .get()
             .then((value) {
           // Transform QueryDocumentSnapshot to Map<String, dynamic>
-          List<Map<String, dynamic>> dataList = value.docs
-              .map((QueryDocumentSnapshot<Map<String, dynamic>> doc) =>
-                  doc.data() as Map<String, dynamic>)
+          List dataList = value.docs
+              .map((QueryDocumentSnapshot<Map<String, dynamic>> doc) => doc)
               .toList();
           // Add dataList to a model.
           List<PatientOverviewModel> data = dataList
-              .map((Map<String, dynamic> json) =>
-                  PatientOverviewModel.fromJson(json))
+              .map(
+                  (json) => PatientOverviewModel.fromJson(json.id, json.data()))
               .toList();
           emit(PatientOverviewSuccess(data));
         });

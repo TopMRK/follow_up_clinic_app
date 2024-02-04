@@ -9,4 +9,5 @@ abstract class Routes {
   static const String resetPassword = 'resetPassword';
   static const String adminHome = 'adminHome';
   static const String previewImage = 'previewImage';
+  static const String adminPatientDetail = 'adminPatientDetail';
 }

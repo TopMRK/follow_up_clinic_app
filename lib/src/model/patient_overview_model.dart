@@ -16,9 +16,9 @@ class PatientOverviewModel extends Equatable {
   @override
   List<Object> get props => [userId, firstname, lastname, hn];
 
-  factory PatientOverviewModel.fromJson(Map<String, dynamic> json) {
+  factory PatientOverviewModel.fromJson(String uid, Map<String, dynamic> json) {
     return PatientOverviewModel(
-        userId: json['address'],
+        userId: uid,
         firstname: json['firstname'],
         lastname: json['lastname'],
         hn: json['hn']);
