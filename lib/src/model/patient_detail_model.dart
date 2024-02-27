@@ -1,40 +1,38 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
-class PatientOverviewModel extends Equatable {
-  final String dateCase;
-  final List<Image> images;
+class PatientDetailModel extends Equatable {
+  final String id;
+  final dynamic dateCase;
+  final List images;
   final String description;
-  final String diagnosis;
-  final List<Image> diagnosisImages;
-  final String diagnosisCategory;
+  final dynamic diagnosisResult;
 
-  const PatientOverviewModel({
+  const PatientDetailModel({
+    required this.id,
     required this.dateCase,
     required this.images,
     required this.description,
-    required this.diagnosis,
-    required this.diagnosisImages,
-    required this.diagnosisCategory,
+    required this.diagnosisResult,
   });
 
   @override
   List<Object> get props => [
+        id,
         dateCase,
         images,
         description,
-        diagnosis,
-        diagnosisImages,
-        diagnosisCategory
+        diagnosisResult,
       ];
 
-  factory PatientOverviewModel.fromJson(Map<String, dynamic> json) {
-    return PatientOverviewModel(
-        dateCase: json['start_created_post'],
-        images: json['image'],
-        description: json['description'],
-        diagnosis: json['diagnosis'] ?? '',
-        diagnosisImages: json['diagnosis_images'],
-        diagnosisCategory: json['diagnosis_category'] ?? '');
+  factory PatientDetailModel.fromJson(pid, Map<String, dynamic> json) {
+    return PatientDetailModel(
+      id: pid,
+      dateCase: json['start_created_post'],
+      images: json['image'],
+      description: json['description'],
+      diagnosisResult: json['diagnosis_result'] ?? {},
+    );
   }
 }

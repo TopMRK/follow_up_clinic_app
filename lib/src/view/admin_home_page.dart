@@ -126,7 +126,7 @@ class _AdminHomePage extends State<AdminHomePage> {
                       style: ButtonStyle(
                           backgroundColor:
                               MaterialStateProperty.all<Color>(Colors.red)),
-                      child: const Text('แจ้งเตือนใหม่'),
+                      child: const Text('รายการรอตอบกลับ'),
                     ),
                     const SizedBox(
                       width: 5,

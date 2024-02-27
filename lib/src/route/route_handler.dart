@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:follow_up_clinic_app/src/bloc/cubit/admin_post/admin_post_cubit.dart';
 import 'package:follow_up_clinic_app/src/bloc/cubit/authentication/authentication_cubit.dart';
 import 'package:follow_up_clinic_app/src/bloc/cubit/homepage/homepage_cubit.dart';
 import 'package:follow_up_clinic_app/src/bloc/cubit/internet_checker/internet_checker_cubit.dart';
 import 'package:follow_up_clinic_app/src/bloc/cubit/login_cubit.dart';
+import 'package:follow_up_clinic_app/src/bloc/cubit/patient_detail/cubit/patient_detail_cubit.dart';
 import 'package:follow_up_clinic_app/src/bloc/cubit/patient_overview/patient_overview_cubit.dart';
 import 'package:follow_up_clinic_app/src/bloc/cubit/register_cubit.dart';
 import 'package:follow_up_clinic_app/src/bloc/cubit/reset_password/reset_password_cubit.dart';
@@ -62,7 +64,15 @@ Route<dynamic> generateRoute(RouteSettings settings) {
               ));
     case Routes.adminPatientDetail:
       return MaterialPageRoute(
-          settings: settings, builder: (context) => const AdminPatientDetail());
+          settings: settings,
+          builder: (context) => MultiBlocProvider(providers: [
+                BlocProvider<PatientDetailCubit>(
+                  create: (context) => PatientDetailCubit(),
+                ),
+                BlocProvider<AdminPostCubit>(
+                  create: (context) => AdminPostCubit(),
+                ),
+              ], child: const AdminPatientDetail()));
     default:
       return MaterialPageRoute(
           builder: (context) => const AuthenticationPage());

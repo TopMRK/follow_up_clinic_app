@@ -115,7 +115,7 @@ class _HomeContentPage extends State<HomeContentPage> {
                     ),
                     const Divider(color: Colors.grey),
                     Padding(
-                      padding: EdgeInsets.fromLTRB(0, 10, 0, 20),
+                      padding: const EdgeInsets.fromLTRB(0, 10, 0, 20),
                       child: Text(
                         state.data[index]['description'],
                         maxLines: 10,
